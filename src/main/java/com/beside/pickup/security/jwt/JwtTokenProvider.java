@@ -1,5 +1,6 @@
 package com.beside.pickup.security.jwt;
 
+import com.beside.pickup.member.domain.QMember;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

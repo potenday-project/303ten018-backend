@@ -3,6 +3,7 @@ package com.beside.pickup.member.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,18 +15,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member implements UserDetails {
 
     @Id @GeneratedValue
-    private Long memberId;
-    private String id;
+    private Long id;
+    private String loginId;
     private String password;
     private String sex;
     private String nickname;
     private String contact;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();
 
     @Override
