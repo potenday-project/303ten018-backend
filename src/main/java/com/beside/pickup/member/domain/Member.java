@@ -26,8 +26,20 @@ public class Member implements UserDetails {
     private String sex;
     private String nickname;
     private String contact;
+    private Long age;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();
+
+    @Builder
+    public Member(String loginId, String password, String sex, String nickname, String contact, List<String> roles, Long age) {
+        this.loginId = loginId;
+        this.password = password;
+        this.sex = sex;
+        this.nickname = nickname;
+        this.contact = contact;
+        this.roles = roles;
+        this.age = age;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
