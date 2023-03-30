@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     // 해당하는 User 의 데이터가 존재한다면 UserDetails 객체로 만들어서 리턴
     private UserDetails createUserDetails(Member member) {
         return User.builder()
-                .username(member.getUsername())
+                .username(member.getLoginId())
                 .password(passwordEncoder.encode(member.getPassword()))
                 .roles(member.getRoles().toArray(new String[0]))
                 .build();

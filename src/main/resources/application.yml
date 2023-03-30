@@ -40,3 +40,10 @@ springdoc:
   default-produces-media-type: application/json
   paths-to-match:
     - /v1/**
+
+---
+# 운영 설정
+spring:
+  config:
+    activate:
+      on-profile: prod

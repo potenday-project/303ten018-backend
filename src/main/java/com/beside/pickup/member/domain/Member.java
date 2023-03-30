@@ -22,6 +22,7 @@ public class Member implements UserDetails {
     @Id @GeneratedValue
     private Long id;
     private String loginId;
+    private String name;
     private String password;
     private String sex;
     private String nickname;
@@ -31,9 +32,10 @@ public class Member implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
     @Builder
-    public Member(String loginId, String password, String sex, String nickname, String contact, List<String> roles, Long age) {
+    public Member(String loginId, String password, String name, String sex, String nickname, String contact, List<String> roles, Long age) {
         this.loginId = loginId;
         this.password = password;
+        this.name = name;
         this.sex = sex;
         this.nickname = nickname;
         this.contact = contact;
@@ -50,7 +52,7 @@ public class Member implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
     @Override

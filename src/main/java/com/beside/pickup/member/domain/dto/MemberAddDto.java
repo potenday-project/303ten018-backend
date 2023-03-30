@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class MemberAddDto {
     private String loginId;
+    private String name;
     private String password;
     private String sex;
     private String nickname;
@@ -17,6 +18,7 @@ public class MemberAddDto {
         return Member.builder()
                 .loginId(this.loginId)
                 .password(this.password)
+                .name(this.name)
                 .sex(this.sex)
                 .nickname(this.nickname)
                 .contact(this.contact)
