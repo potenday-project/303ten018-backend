@@ -23,8 +23,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class JwtTokenProvider {
- 
+
+    @Value("${jwt.refresh-expire-time}")
+    private String refreshTokenExpireTime;
+
+    @Value("${jwt.accessToken-expire-time}")
+    private String accessTokenExpireTime;
+
     private final Key key;
+
  
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -40,7 +47,7 @@ public class JwtTokenProvider {
  
         long now = (new Date()).getTime();
         // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 86400000);
+        Date accessTokenExpiresIn = new Date(now + accessTokenExpireTime);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -50,7 +57,7 @@ public class JwtTokenProvider {
  
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 86400000))
+                .setExpiration(new Date(now + refreshTokenExpireTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
  

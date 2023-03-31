@@ -52,4 +52,5 @@ public class MemberController {
     public String test() {
         return "테스트 성공";
     }
+
 }
