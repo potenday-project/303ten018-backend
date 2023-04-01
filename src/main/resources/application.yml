@@ -26,7 +26,7 @@ logging:
 jwt:
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
   refreshToken-expire-time: 86400000
-  accessToken-expire-time: 1800000
+  accessToken-expire-time: 60000
 
 springdoc:
   swagger-ui:

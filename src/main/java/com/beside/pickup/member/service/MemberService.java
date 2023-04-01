@@ -5,10 +5,12 @@ import com.beside.pickup.jwt.repository.RefreshTokenRepository;
 import com.beside.pickup.member.domain.Member;
 import com.beside.pickup.member.domain.Role;
 import com.beside.pickup.member.domain.dto.MemberAddDto;
+import com.beside.pickup.member.domain.dto.MemberDto;
 import com.beside.pickup.member.domain.dto.MemberLoginDto;
 import com.beside.pickup.member.repository.MemberRepository;
 import com.beside.pickup.security.jwt.JwtTokenProvider;
 import com.beside.pickup.security.jwt.TokenInfo;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
 
-    @Value("${jwt.refresh-expire-time}")
+    @Value("${jwt.refreshToken-expire-time}")
     private String refreshTokenExpireTime;
  
     private final MemberRepository memberRepository;
@@ -62,14 +64,28 @@ public class MemberService {
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 
-        refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .refreshToken(tokenInfo.getRefreshToken())
-                        .expireTime(refreshTokenExpireTime)
-                        .loginId(memberLoginDto.getLoginId())
-                .build());
- 
+        saveRefreshToken(memberLoginDto, tokenInfo);
+
         return tokenInfo;
     }
 
+    private void saveRefreshToken(MemberLoginDto memberLoginDto, TokenInfo tokenInfo) {
+        Member member = memberRepository.findByLoginId(memberLoginDto.getLoginId());
+
+        RefreshToken refreshToken = RefreshToken.builder()
+                .refreshToken(tokenInfo.getRefreshToken())
+                .expireTime(refreshTokenExpireTime).build();
+
+        refreshToken.setMember(member);
+
+        refreshTokenRepository.save(refreshToken);
+    }
+
+    public MemberDto getUserInfo(HttpServletRequest request) {
+        String token = jwtTokenProvider.resolveToken(request);
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        String userId = authentication.getName();
+        Member member = memberRepository.findByLoginId(userId);
+        return MemberDto.MemberToMemberDto(member);
+    }
 }

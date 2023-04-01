@@ -4,6 +4,7 @@ import com.beside.pickup.member.domain.QMember;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.refresh-expire-time}")
+    @Value("${jwt.refreshToken-expire-time}")
     private String refreshTokenExpireTime;
 
     @Value("${jwt.accessToken-expire-time}")
@@ -47,7 +49,7 @@ public class JwtTokenProvider {
  
         long now = (new Date()).getTime();
         // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + accessTokenExpireTime);
+        Date accessTokenExpiresIn = new Date(now + Long.parseLong(accessTokenExpireTime));
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -57,7 +59,7 @@ public class JwtTokenProvider {
  
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + refreshTokenExpireTime))
+                .setExpiration(new Date(now + Long.parseLong(refreshTokenExpireTime)))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
  
@@ -103,6 +105,14 @@ public class JwtTokenProvider {
             log.info("JWT claims string is empty.", e);
         }
         return false;
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
  
     private Claims parseClaims(String accessToken) {

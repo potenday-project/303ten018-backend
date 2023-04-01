@@ -1,8 +1,7 @@
 package com.beside.pickup.jwt.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.beside.pickup.member.domain.Member;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,12 +17,19 @@ public class RefreshToken {
     private Long id;
     private String refreshToken;
     private String expireTime;
-    private String loginId;
+    @OneToOne(mappedBy = "refreshToken")
+    private Member member;
 
     @Builder
-    public RefreshToken(String refreshToken, String expireTime, String loginId) {
+    public RefreshToken(String refreshToken, String expireTime) {
         this.refreshToken = refreshToken;
         this.expireTime = expireTime;
-        this.loginId = loginId;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        if (member.getRefreshToken() != this) {
+            member.setRefreshToken(this);
+        }
     }
 }

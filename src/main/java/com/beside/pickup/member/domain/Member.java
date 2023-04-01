@@ -1,5 +1,6 @@
 package com.beside.pickup.member.domain;
 
+import com.beside.pickup.jwt.domain.RefreshToken;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,8 +29,16 @@ public class Member implements UserDetails {
     private String nickname;
     private String contact;
     private Long age;
+    @OneToOne
+    @JoinColumn(name = "refresh_token_id")
+    private RefreshToken refreshToken;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();
+
+    public void setRefreshToken(RefreshToken refreshToken) {
+        this.refreshToken = refreshToken;
+        refreshToken.setMember(this);
+    }
 
     @Builder
     public Member(String loginId, String password, String name, String sex, String nickname, String contact, List<String> roles, Long age) {
