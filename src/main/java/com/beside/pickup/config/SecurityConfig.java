@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST,"/v1/user")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST, "/v1/user/login")).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/refresh-token")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/v1/refresh-token")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
