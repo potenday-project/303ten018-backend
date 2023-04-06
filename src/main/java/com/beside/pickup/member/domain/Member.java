@@ -1,5 +1,7 @@
 package com.beside.pickup.member.domain;
 
+import com.beside.pickup.board.domain.Board;
+import com.beside.pickup.boardmembership.BoardMembership;
 import com.beside.pickup.jwt.domain.RefreshToken;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -34,6 +36,10 @@ public class Member implements UserDetails {
     private RefreshToken refreshToken;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<BoardMembership> boardMemberships = new ArrayList<>();
+
 
     public void setRefreshToken(RefreshToken refreshToken) {
         this.refreshToken = refreshToken;
