@@ -1,5 +1,6 @@
 package com.beside.pickup.board.domain;
 
+import com.beside.pickup.board.domain.dto.BoardStatusDto;
 import com.beside.pickup.boardmembership.domain.BoardMembership;
 import com.beside.pickup.common.BaseTimeEntity;
 import com.beside.pickup.place.domain.Place;
@@ -27,12 +28,22 @@ public class Board extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private BoardStatus status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="place_id")
     private Place place;
 
     @OneToMany(mappedBy = "board")
     private List<BoardMembership> boardMemberships = new ArrayList<>();
+
+    @Builder
+    public Board(String title, LocalDate meetingDate, Long participantsNumber, String contents, BoardStatus status, Place place) {
+        this.title = title;
+        this.meetingDate = meetingDate;
+        this.participantsNumber = participantsNumber;
+        this.contents = contents;
+        this.status = status;
+        this.place = place;
+    }
 
     public void setPlace(Place place) {
         if (this.place != null) {
@@ -49,13 +60,9 @@ public class Board extends BaseTimeEntity {
         }
     }
 
-    @Builder
-    public Board(String title, LocalDate meetingDate, Long participantsNumber, String contents, BoardStatus status, Place place) {
-        this.title = title;
-        this.meetingDate = meetingDate;
-        this.participantsNumber = participantsNumber;
-        this.contents = contents;
-        this.status = status;
-        this.place = place;
+    public void changeStatus(BoardStatus boardStatus) {
+        this.status = boardStatus;
     }
+
+
 }
