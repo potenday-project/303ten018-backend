@@ -26,4 +26,14 @@ public class BoardMembership {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    private BoardMembershipStatus status;
+
+    public void setBoard(Board board) {
+        if (this.board != null) {
+            this.board.getBoardMemberships().remove(this);
+        }
+        this.board = board;
+        board.getBoardMemberships().add(this);
+    }
 }

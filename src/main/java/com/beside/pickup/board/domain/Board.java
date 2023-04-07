@@ -1,7 +1,7 @@
 package com.beside.pickup.board.domain;
 
 import com.beside.pickup.boardmembership.BoardMembership;
-import com.beside.pickup.place.Place;
+import com.beside.pickup.place.domain.Place;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,5 +37,12 @@ public class Board {
         }
         this.place = place;
         place.getBoards().add(this);
+    }
+
+    public void addBoardMembership(BoardMembership boardMembership) {
+        this.boardMemberships.add(boardMembership);
+        if (boardMembership.getBoard() != this) {
+            boardMembership.setBoard(this);
+        }
     }
 }

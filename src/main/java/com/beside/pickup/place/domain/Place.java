@@ -1,4 +1,4 @@
-package com.beside.pickup.place;
+package com.beside.pickup.place.domain;
 
 import com.beside.pickup.board.domain.Board;
 import jakarta.persistence.Entity;
