@@ -37,7 +37,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<BoardMembership> boardMemberships = new ArrayList<>();
 
 

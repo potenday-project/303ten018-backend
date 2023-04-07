@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BoardService {
@@ -52,11 +54,22 @@ public class BoardService {
 
     }
 
+    public List<Board> getBoardList() {
+        return boardRepository.findAll();
+    }
+
     @Transactional
     public void updateStatus(BoardStatusDto boardStatusDto) {
         Board board = boardRepository.findById(boardStatusDto.getBoardId())
                 .orElseThrow(() -> new IllegalArgumentException("no such board"));
 
         board.changeStatus(boardStatusDto.getBoardStatus());
+    }
+
+    public void getBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("no such board"));
+
+
     }
 }

@@ -28,11 +28,11 @@ public class Board extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private BoardStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="place_id")
     private Place place;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     private List<BoardMembership> boardMemberships = new ArrayList<>();
 
     @Builder

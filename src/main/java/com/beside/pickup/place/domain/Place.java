@@ -1,10 +1,7 @@
 package com.beside.pickup.place.domain;
 
 import com.beside.pickup.board.domain.Board;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +19,7 @@ public class Place {
     private String shortAddress;
     private String detailAddress;
 
-    @OneToMany(mappedBy = "place")
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
     private List<Board> boards = new ArrayList<>();
 
     public void addBoard(Board board) {

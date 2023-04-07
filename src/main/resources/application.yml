@@ -17,6 +17,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        batch_fetch_style: DYNAMIC
+        default_batch_fetch_size: 100
+
 
 logging:
   level:
