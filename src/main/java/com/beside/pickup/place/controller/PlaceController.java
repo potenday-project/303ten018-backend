@@ -23,11 +23,11 @@ public class PlaceController {
 
     @Operation(summary = "장소 전체 조회", description = "장소 전체 조회", tags = { "장소" })
     @GetMapping("")
-    public ResponseEntity<List<Place>> addUser() {
+    public ResponseEntity<List<Place>> findAllPlace() {
         List<PlaceDto> placeDtoList =
                 placeService.findAllPlace()
                 .stream()
-                .map(PlaceDto::toPlaceDto)
+                .map(PlaceDto::PlaceToPlaceDto)
                 .collect(Collectors.toList());
 
         return new ResponseEntity(placeDtoList, HttpStatus.OK);

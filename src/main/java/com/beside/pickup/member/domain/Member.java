@@ -1,7 +1,7 @@
 package com.beside.pickup.member.domain;
 
-import com.beside.pickup.board.domain.Board;
-import com.beside.pickup.boardmembership.BoardMembership;
+import com.beside.pickup.boardmembership.domain.BoardMembership;
+import com.beside.pickup.common.BaseTimeEntity;
 import com.beside.pickup.jwt.domain.RefreshToken;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member implements UserDetails {
+public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id @GeneratedValue
     private Long id;
@@ -44,6 +44,13 @@ public class Member implements UserDetails {
     public void setRefreshToken(RefreshToken refreshToken) {
         this.refreshToken = refreshToken;
         refreshToken.setMember(this);
+    }
+
+    public void addBoardMembership(BoardMembership boardMembership) {
+        this.boardMemberships.add(boardMembership);
+        if (boardMembership.getMember() != this) {
+            boardMembership.setMember(this);
+        }
     }
 
     @Builder

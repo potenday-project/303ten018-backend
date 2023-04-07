@@ -11,7 +11,7 @@ public class PlaceDto {
     private String shortAddress;
     private String detailAddress;
 
-    public static PlaceDto toPlaceDto(Place place) {
+    public static PlaceDto PlaceToPlaceDto(Place place) {
         return PlaceDto.builder()
                 .id(place.getId())
                 .shortAddress(place.getShortAddress())
