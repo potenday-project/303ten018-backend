@@ -1,7 +1,10 @@
 package com.beside.pickup.board.domain;
 
+import com.beside.pickup.board.domain.dto.BoardDto;
 import com.beside.pickup.board.domain.dto.BoardStatusDto;
+import com.beside.pickup.board.domain.dto.MyBoardDto;
 import com.beside.pickup.boardmembership.domain.BoardMembership;
+import com.beside.pickup.boardmembership.domain.dto.BoardMembershipDto;
 import com.beside.pickup.common.BaseTimeEntity;
 import com.beside.pickup.place.domain.Place;
 import jakarta.persistence.*;
@@ -13,6 +16,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -62,6 +66,41 @@ public class Board extends BaseTimeEntity {
 
     public void changeStatus(BoardStatus boardStatus) {
         this.status = boardStatus;
+    }
+
+    public static BoardDto BoardToBoardDto(Board board) {
+
+        List<BoardMembershipDto> boardMembershipDtos = board.getBoardMemberships().stream()
+                .map(BoardMembership::boardMembershipToDto)
+                .collect(Collectors.toList());
+
+        return BoardDto.builder()
+                .boardId(board.getId())
+                .title(board.getTitle())
+                .meetingDate(board.getMeetingDate())
+                .participantsNumber(board.getParticipantsNumber())
+                .contents(board.getContents())
+                .status(board.getStatus())
+                .placeId(board.getPlace().getId())
+                .shortAddress(board.getPlace().getShortAddress())
+                .detailAddress(board.getPlace().getDetailAddress())
+                .boardMemberships(boardMembershipDtos)
+                .build();
+    }
+
+    public static MyBoardDto BoardToMyBoardDto(Board board) {
+
+        return MyBoardDto.builder()
+                .boardId(board.getId())
+                .title(board.getTitle())
+                .meetingDate(board.getMeetingDate())
+                .participantsNumber(board.getParticipantsNumber())
+                .contents(board.getContents())
+                .status(board.getStatus())
+                .placeId(board.getPlace().getId())
+                .shortAddress(board.getPlace().getShortAddress())
+                .detailAddress(board.getPlace().getDetailAddress())
+                .build();
     }
 
 

@@ -1,6 +1,7 @@
 package com.beside.pickup.boardmembership.domain;
 
 import com.beside.pickup.board.domain.Board;
+import com.beside.pickup.boardmembership.domain.dto.BoardMembershipDto;
 import com.beside.pickup.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -49,5 +50,13 @@ public class BoardMembership {
         }
         this.member = member;
         member.getBoardMemberships().add(this);
+    }
+
+    public static BoardMembershipDto boardMembershipToDto(BoardMembership boardMembership) {
+        return BoardMembershipDto.builder()
+                .boardId(boardMembership.getBoard().getId())
+                .memberId(boardMembership.getMember().getId())
+                .boardMemberStatus(boardMembership.getStatus())
+                .build();
     }
 }
