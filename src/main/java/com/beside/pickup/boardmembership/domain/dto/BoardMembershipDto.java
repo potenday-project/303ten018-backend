@@ -9,7 +9,8 @@ import lombok.Data;
 @Builder
 public class BoardMembershipDto {
     private Long memberId;
-    private Long boardId;
+    private String loginId;
+    private String nickname;
     private BoardMembershipStatus boardMemberStatus;
 
 }

@@ -54,8 +54,9 @@ public class BoardMembership {
 
     public static BoardMembershipDto boardMembershipToDto(BoardMembership boardMembership) {
         return BoardMembershipDto.builder()
-                .boardId(boardMembership.getBoard().getId())
                 .memberId(boardMembership.getMember().getId())
+                .loginId(boardMembership.getMember().getLoginId())
+                .nickname(boardMembership.getMember().getNickname())
                 .boardMemberStatus(boardMembership.getStatus())
                 .build();
     }

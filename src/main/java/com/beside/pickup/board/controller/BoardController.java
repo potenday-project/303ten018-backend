@@ -37,7 +37,7 @@ public class BoardController {
     @Operation(summary = "특정 게시물 조회", description = "특정 게시물 조회", tags = {"게시물"})
     @GetMapping("/{boardId}")
     public ResponseEntity<BoardDto> getBoard(@PathVariable Long boardId) {
-        BoardDto boardDto = boardService.getBoard(boardId);
+        BoardDto boardDto = boardService.getBoard(boardId) ;
 
         return new ResponseEntity(boardDto, HttpStatus.OK);
     }
@@ -64,8 +64,5 @@ public class BoardController {
         boardService.updateStatus(boardStatusDto);
         return new ResponseEntity(HttpStatus.OK);
     }
-
-
-
 
 }
